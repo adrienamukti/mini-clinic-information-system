@@ -21,6 +21,9 @@ const prescriptionRoutes = require(
 const dashboardRoutes = require(
     './routes/dashboardRoutes'
 );
+const referenceDataRoutes = require(
+    './routes/referenceDataRoutes'
+);
 
 const app = express();
 
@@ -34,6 +37,7 @@ app.use(queueRoutes);
 app.use(medicalRecordRoutes);
 app.use(prescriptionRoutes);
 app.use(dashboardRoutes);
+app.use(referenceDataRoutes);
 
 app.get('/', (req, res) => {
     res.json({
