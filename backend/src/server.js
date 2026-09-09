@@ -15,6 +15,9 @@ const registrationRoutes = require(
 const medicalRecordRoutes = require(
     './routes/medicalRecordRoutes'
 );
+const prescriptionRoutes = require(
+    './routes/prescriptionRoutes'
+);
 
 const app = express();
 
@@ -26,6 +29,7 @@ app.use(patientRoutes);
 app.use(registrationRoutes);
 app.use(queueRoutes);
 app.use(medicalRecordRoutes);
+app.use(prescriptionRoutes);
 
 app.get('/', (req, res) => {
     res.json({
