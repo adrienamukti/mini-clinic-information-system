@@ -1,0 +1,662 @@
+{
+  "info": {
+    "_postman_id": "42bff8fc-4ea8-4a37-90d4-a170c5ddb91a",
+    "name": "Mini Clinic Information System API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58030826"
+  },
+  "item": [
+    {
+      "name": "Queues",
+      "item": [
+        {
+          "name": "Get Queues",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Queue list loaded successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/queues",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "queues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Queue",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Queue created successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n    pm.expect(response.data).to.have.property(\"queue_number\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 201 &&\r\n    response.data &&\r\n    response.data.id\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"queue_id\",\r\n        response.data.id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"registration_id\": {{registration_id}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Call Queue",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Queue called successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data.status).to.eql(\"Dipanggil\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/queues/{{queue_id}}/call",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "queues",
+                "{{queue_id}}",
+                "call"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login Administrator",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Login berhasil\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"token\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 200 &&\r\n    response.data &&\r\n    response.data.token\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"token\",\r\n        response.data.token\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"admin@miniclinic.local\",\r\n    \"password\": \"Admin123!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Registration Officer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Login berhasil\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"token\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 200 &&\r\n    response.data &&\r\n    response.data.token\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"token\",\r\n        response.data.token\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"registration@miniclinic.local\",\r\n    \"password\": \"Registration123!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Doctor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Login berhasil\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"token\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 200 &&\r\n    response.data &&\r\n    response.data.token\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"token\",\r\n        response.data.token\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"doctor@miniclinic.local\",\r\n    \"password\": \"Doctor123!\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Logout successful\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Get Patients",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Response success is true\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/patients",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Patient",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Patient created successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 201 &&\r\n    response.data &&\r\n    response.data.id\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"patient_id\",\r\n        response.data.id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nik\": \"3204010101010010\",\r\n    \"name\": \"Pasien Postman\",\r\n    \"gender\": \"Laki-laki\",\r\n    \"date_of_birth\": \"2000-01-15\",\r\n    \"phone\": \"081234567810\",\r\n    \"address\": \"Bandung\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/patients",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Patient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Patient",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/patients/{{patient_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "patients",
+                "{{patient_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Registrations",
+      "item": [
+        {
+          "name": "Get Registrations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Registrations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Registration created successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 201 &&\r\n    response.data &&\r\n    response.data.id\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"registration_id\",\r\n        response.data.id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"patient_id\": {{patient_id}},\r\n    \"doctor_id\": {{doctor_id}},\r\n    \"polyclinic_id\": {{polyclinic_id}},\r\n    \"visit_date\": \"2026-09-10\",\r\n    \"payment_type\": \"Umum\",\r\n    \"initial_complaint\": \"Demam dan sakit kepala\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/registrations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "registrations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Registrations",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"patient_id\": {{patient_id}},\r\n    \"doctor_id\": {{doctor_id}},\r\n    \"polyclinic_id\": {{polyclinic_id}},\r\n    \"visit_date\": \"2026-09-10\",\r\n    \"payment_type\": \"Umum\",\r\n    \"initial_complaint\": \"Demam dan sakit kepala\",\r\n    \"status\": \"Check In\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/registrations/{{registration_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "registrations",
+                "{{registration_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Medical Records",
+      "item": [
+        {
+          "name": "Create Medical Record",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Medical record created successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n    pm.expect(response.data).to.have.property(\"diagnosis\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 201 &&\r\n    response.data &&\r\n    response.data.id\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"medical_record_id\",\r\n        response.data.id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"registration_id\": {{registration_id}},\r\n    \"subjective_complaint\": \"Batuk, pilek, dan badan terasa kurang nyaman\",\r\n    \"blood_pressure\": \"120/80\",\r\n    \"temperature\": 37.8,\r\n    \"weight\": 55.5,\r\n    \"height\": 160,\r\n    \"diagnosis\": \"Infeksi saluran pernapasan atas ringan\",\r\n    \"therapy_plan\": \"Istirahat cukup, hidrasi, dan terapi simptomatik\",\r\n    \"medical_actions\": [\r\n        {\r\n            \"action_name\": \"Pemeriksaan fisik\",\r\n            \"notes\": \"Pemeriksaan kondisi umum pasien\"\r\n        },\r\n        {\r\n            \"action_name\": \"Pemeriksaan suhu tubuh\",\r\n            \"notes\": \"Suhu tubuh 37.8 derajat Celsius\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/medical-records",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "medical-records"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Patient Medical History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Medical history loaded successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"patient\");\r\n    pm.expect(response.data).to.have.property(\"medical_records\");\r\n    pm.expect(response.data.medical_records).to.be.an(\"array\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/medical-records/{{patient_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "medical-records",
+                "{{patient_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prescriptions",
+      "item": [
+        {
+          "name": "Create Prescription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Prescription created successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n    pm.expect(response.data).to.have.property(\"items\");\r\n    pm.expect(response.data.items).to.be.an(\"array\");\r\n});\r\n\r\nif (\r\n    pm.response.code === 201 &&\r\n    response.data &&\r\n    response.data.id\r\n) {\r\n    pm.collectionVariables.set(\r\n        \"prescription_id\",\r\n        response.data.id\r\n    );\r\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"medical_record_id\": {{medical_record_id}},\r\n    \"notes\": \"Obat diminum sesuai aturan dan setelah makan\",\r\n    \"items\": [\r\n        {\r\n            \"medicine_name\": \"Paracetamol\",\r\n            \"dosage\": \"500 mg\",\r\n            \"frequency\": \"3x sehari\",\r\n            \"duration\": \"3 hari\",\r\n            \"quantity\": 9,\r\n            \"instructions\": \"Diminum setelah makan\"\r\n        },\r\n        {\r\n            \"medicine_name\": \"Vitamin C\",\r\n            \"dosage\": \"500 mg\",\r\n            \"frequency\": \"1x sehari\",\r\n            \"duration\": \"5 hari\",\r\n            \"quantity\": 5,\r\n            \"instructions\": \"Diminum setelah sarapan\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/prescriptions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "prescriptions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Prescription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Prescription loaded successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"id\");\r\n    pm.expect(response.data).to.have.property(\"items\");\r\n    pm.expect(response.data.items).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Prescription has medicine items\", function () {\r\n    pm.expect(response.data.items.length).to.be.above(0);\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/prescriptions/{{prescription_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "prescriptions",
+                "{{prescription_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst response = pm.response.json();\r\n\r\npm.test(\"Dashboard loaded successfully\", function () {\r\n    pm.expect(response.success).to.eql(true);\r\n    pm.expect(response.data).to.have.property(\"total_patients\");\r\n    pm.expect(response.data).to.have.property(\"patients_today\");\r\n    pm.expect(response.data).to.have.property(\"queues_today\");\r\n    pm.expect(response.data).to.have.property(\"waiting_patients\");\r\n    pm.expect(response.data).to.have.property(\"completed_patients\");\r\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/dashboard",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "patient_id",
+      "value": ""
+    },
+    {
+      "key": "registration_id",
+      "value": ""
+    },
+    {
+      "key": "queue_id",
+      "value": ""
+    },
+    {
+      "key": "medical_record_id",
+      "value": ""
+    },
+    {
+      "key": "prescription_id",
+      "value": ""
+    }
+  ]
+}
