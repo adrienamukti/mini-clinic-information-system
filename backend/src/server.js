@@ -7,6 +7,7 @@ dotenv.config();
 const db = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const patientRoutes = require('./routes/patientRoutes');
+const queueRoutes = require('./routes/queueRoutes');
 
 const registrationRoutes = require(
     './routes/registrationRoutes'
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(authRoutes);
 app.use(patientRoutes);
 app.use(registrationRoutes);
+app.use(queueRoutes);
 
 app.get('/', (req, res) => {
     res.json({
